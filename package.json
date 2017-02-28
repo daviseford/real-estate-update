@@ -178,6 +178,7 @@
     "webpack-validator": "^2.3.0"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "electron-debug": "^1.1.0",
     "font-awesome": "^4.7.0",
     "react": "^15.4.2",
@@ -187,7 +188,8 @@
     "react-router-redux": "^4.0.7",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "source-map-support": "^0.4.10"
+    "source-map-support": "^0.4.10",
+    "xml2js": "^0.4.17"
   },
   "devEngines": {
     "node": ">=6.x",
