@@ -179,6 +179,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "cheerio": "^0.22.0",
     "electron-debug": "^1.1.0",
     "font-awesome": "^4.7.0",
     "react": "^15.4.2",

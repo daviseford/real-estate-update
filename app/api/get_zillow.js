@@ -42,22 +42,22 @@ Zillow.getProperty = function (address, zip) {
  * @returns {Promise}
  */
 Zillow.getZestimate = function (zpid, rent = false) {
-  return new Promise(function (pOk, pErr) {
+  return new Promise(function (resolve, reject) {
     const params = `zws-id=${zwsId}&zpid=${zpid}&rentzestimate=${rent}`;
     const endpoint = `http://www.zillow.com/webservice/GetZestimate.htm?`;
 
     fetch(`${endpoint}${params}`)
         .then(res => res.text())
-        .catch(err => pErr(err))
+        .catch(err => reject(err))
         .then(res => {
           parseString(res, (err, result) => {
-            if (err) return pErr(err);
+            if (err) return reject(err);
             const results = result["Zestimate:zestimate"].response["0"];
-            pOk(results);
+            resolve(results);
           })
         })
         .catch(err => {
-          pErr(err);
+          reject(err);
         })
 
   });
