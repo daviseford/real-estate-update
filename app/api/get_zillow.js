@@ -52,7 +52,7 @@ Zillow.getZestimate = function (zpid, rent = false) {
         .then(res => {
           parseString(res, (err, result) => {
             if (err) return reject(err);
-            const results = result["Zestimate:zestimate"].response["0"];
+            const results = result["Zestimate:zestimate"].response[0];
             resolve(results);
           })
         })

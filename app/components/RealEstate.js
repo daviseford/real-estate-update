@@ -6,8 +6,9 @@ export default class RealEstate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      redfin_value: '',
-      zillow_value: ''
+      base_value: 395000,
+      redfin_value: 0,
+      zillow_value: 0
     }
   }
 
@@ -20,7 +21,7 @@ export default class RealEstate extends Component {
           const zpid = propertyObj.zpid[0];
           Zillow.getZestimate(zpid).then(zestimateObj => {
             this.setState({
-              zillow_value: zestimateObj.zestimate[0].amount[0]._
+              zillow_value: parseInt(zestimateObj.zestimate[0].amount[0]._)
             });
           })
         })
@@ -30,18 +31,66 @@ export default class RealEstate extends Component {
   render() {
     return (
         <div>
-          <div className="col-xs-6 text-center">
-            <h1>{this.state.redfin_value}</h1>
-            <h3>Redfin Estimate</h3>
+
+          <div className="row">
+            <div className="col-md-12 text-center">
+              <h1>2240 Sanibel Dr.</h1>
+            </div>
+            <div className="col-xs-12 text-center">
+              <h1>{this.state.base_value.toLocaleString()}</h1>
+              <h3>Base Value</h3>
+            </div>
           </div>
 
-          <div className="col-xs-6 text-center">
-            <h1>{this.state.zillow_value}</h1>
-            <h3>Zillow Estimate</h3>
+          <div className="row">
+            <Estimate dollars={this.state.zillow_value} txt={'Zillow Estimate'} base_value={this.state.base_value}/>
+            <Estimate dollars={this.state.redfin_value} txt={'Redfin Estimate'} base_value={this.state.base_value}/>
           </div>
 
         </div>
     )
   }
 
+}
+
+class Estimate extends Component {
+  static propTypes = {
+    dollars: React.PropTypes.number.isRequired,
+    txt: React.PropTypes.string.isRequired,
+    base_value: React.PropTypes.number
+  };
+
+  render() {
+    return (
+        <div className="col-xs-6 text-center">
+          <h1>{this.props.dollars.toLocaleString()}</h1>
+          <h3>{this.props.txt}</h3>
+          {
+            this.props.dollars > 0
+                ? <DifferenceIndicator base_value={this.props.base_value} curr_value={this.props.dollars}/>
+                : null
+          }
+        </div>
+    )
+  }
+}
+
+class DifferenceIndicator extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  static propTypes = {
+    base_value: React.PropTypes.number.isRequired,
+    curr_value: React.PropTypes.number.isRequired,
+  };
+
+  render() {
+    const val = this.props.curr_value - this.props.base_value;
+    const style = val > 0 ? 'text-success' : 'text-warning';
+    const prefix = val > 0 ? '+' : '-';
+    return (
+        <span className={style}>{prefix}{val.toLocaleString()}</span>
+    )
+  }
 }

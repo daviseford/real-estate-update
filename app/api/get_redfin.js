@@ -11,7 +11,7 @@ Redfin.getEstimate = function (url) {
         .then(res => {
           const $ = cheerio.load(res);
           const estimated_price = $('.main-font').first().text();
-          resolve(removeChars(estimated_price))
+          resolve(parseInt(removeChars(estimated_price)))
         })
   });
 };
