@@ -29,8 +29,8 @@
   },
   "browserslist": "electron 1.4",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Real Estate Update",
+    "appId": "org.develar.RealEstateUpdate",
     "category": "public.app-category.tools",
     "dmg": {
       "contents": [
@@ -77,14 +77,11 @@
     "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
   },
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Davis E. Ford",
+    "email": "davis.e.ford.alt@gmail.com",
+    "url": "https://github.com/daviseford"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
-  },
   "keywords": [
     "electron",
     "boilerplate",
