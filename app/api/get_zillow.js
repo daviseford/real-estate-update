@@ -14,8 +14,7 @@ const Zillow = {};
 Zillow.getProperty = function (address, zip) {
   return new Promise(function (pOk, pErr) {
 
-    address = encodeURIComponent(address);
-    const params = `zws-id=${zwsId}&address=${address}&citystatezip=${zip}`;
+    const params = `zws-id=${zwsId}&address=${encodeURIComponent(address)}&citystatezip=${zip}`;
     const endpoint = `http://www.zillow.com/webservice/GetDeepSearchResults.htm?`;
 
     fetch(`${endpoint}${params}`)
@@ -24,7 +23,9 @@ Zillow.getProperty = function (address, zip) {
         .then(res => {
           parseString(res, (err, result) => {
             if (err) return pErr(err);
+            if (!result["SearchResults:searchresults"].response) return pErr(new Error('No response from Zillow'));
             const results = result["SearchResults:searchresults"].response[0].results[0].result[0];
+            console.log(results);
             pOk(results);
           })
         })
@@ -52,6 +53,7 @@ Zillow.getZestimate = function (zpid, rent = false) {
         .then(res => {
           parseString(res, (err, result) => {
             if (err) return reject(err);
+            if (!result["Zestimate:zestimate"].response) return reject(new Error('No response from Zestimate'));
             const results = result["Zestimate:zestimate"].response[0];
             resolve(results);
           })
