@@ -65,5 +65,33 @@ Zillow.getZestimate = function (zpid, rent = false) {
   });
 };
 
+/**
+ * Special async function to handle the whole process
+ * @param address
+ * @param zip
+ * @returns {Promise.<void>}
+ */
+Zillow.getZestimateFromProperty = async function (address, zip) {
+  try {
+    // Grab propertyObj first, we'll need the zpid from here
+    const propertyObj = await Zillow.getProperty(address, zip);
+    const zpid = propertyObj.zpid[0];
+    const last_sold_value = parseInt(propertyObj.lastSoldPrice[0]._);
+    const last_sold_date = propertyObj.lastSoldDate[0];
+
+    const zestimateObj = await Zillow.getZestimate(zpid);
+    const zillow_value = parseInt(zestimateObj.zestimate[0].amount[0]._);
+
+    return {
+      last_sold_date,
+      last_sold_value,
+      zillow_value,
+      zpid,
+    }
+  } catch (e) {
+    console.log('Error fetching Zillow', e);
+  }
+};
+
 
 module.exports = Zillow;

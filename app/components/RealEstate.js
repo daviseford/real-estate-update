@@ -35,26 +35,24 @@ export default class RealEstate extends Component {
     // this.updateEstimates();
   }
 
+  componentWillUnmount() {
+    storage.set('realestate', {address: this.state.address, zip: this.state.zip}, (err) => {
+      if (err) console.log(err);
+      console.log('Saved to storage');
+    });
+  }
+
   updateEstimates() {
 
     // TODO get rid of hardcoding
-    Redfin.getEstimate('https://www.redfin.com/VA/Reston/2240-Sanibel-Dr-20191/home/9232493')
+    Redfin.getEstimate('https://www.redfin.com/VA/Fairfax-Station/8704-Running-Fox-Ct-22039/home/9821142')
         .then(res => {
           this.setState({redfin_value: res});
         });
 
-    Zillow.getProperty(this.state.address, this.state.zip)
-        .then(propertyObj => {
-          const zpid = propertyObj.zpid[0];
-          const lastSoldPrice = parseInt(propertyObj.lastSoldPrice[0]._);
-          const lastSoldDate = propertyObj.lastSoldDate[0];
-          this.setState({last_sold_value: lastSoldPrice, last_sold_date: lastSoldDate});
-
-          Zillow.getZestimate(zpid).then(zestimateObj => {
-            const zestimate = parseInt(zestimateObj.zestimate[0].amount[0]._);
-            this.setState({zillow_value: zestimate});
-          })
-        }).catch((err) => console.log(err))
+    Zillow.getZestimateFromProperty(this.state.address, this.state.zip)
+        .then(res => this.setState(res))
+        .catch(err => console.log(err));
   }
 
   /**
@@ -63,10 +61,7 @@ export default class RealEstate extends Component {
    */
   handleSubmit(e) {
     e.preventDefault();
-    storage.set('realestate', {address: this.state.address, zip: this.state.zip}, (err) => {
-      if (err) console.log(err);
-      this.updateEstimates();
-    });
+    this.updateEstimates();
   }
 
   updateAddress(e) {
