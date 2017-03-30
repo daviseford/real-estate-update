@@ -45,7 +45,7 @@ export default class RealEstate extends Component {
   updateEstimates() {
 
     // TODO get rid of hardcoding
-    Redfin.getEstimate('https://www.redfin.com/VA/Fairfax-Station/8704-Running-Fox-Ct-22039/home/9821142')
+    Redfin.getEstimate('https://www.redfin.com/VA/Reston/2240-Sanibel-Dr-20191/home/9232493')
         .then(res => {
           this.setState({redfin_value: res});
         });
@@ -61,7 +61,11 @@ export default class RealEstate extends Component {
    */
   handleSubmit(e) {
     e.preventDefault();
-    this.updateEstimates();
+    storage.set('realestate', {address: this.state.address, zip: this.state.zip}, (err) => {
+      if (err) console.log(err);
+      console.log('Saved to storage');
+      this.updateEstimates();
+    });
   }
 
   updateAddress(e) {

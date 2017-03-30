@@ -89,7 +89,7 @@ Zillow.getZestimateFromProperty = async function (address, zip) {
       zpid,
     }
   } catch (e) {
-    console.log('Error fetching Zillow', e);
+    return e;
   }
 };
 
